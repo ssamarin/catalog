@@ -1,7 +1,10 @@
+@import url("./_fonts.scss");
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+  font-family: Roboto, serif;
 }
 
 html,

@@ -1,0 +1,17 @@
+@font-face {
+  font-weight: 400;
+  font-family: Roboto, serif;
+  font-style: normal;
+  src:
+    url("../assets/fonts/Roboto-Regular.woff2") format("woff2"),
+    url("../assets/fonts/Roboto-Regular.woff") format("woff");
+}
+
+@font-face {
+  font-weight: 700;
+  font-family: Roboto, serif;
+  font-style: normal;
+  src:
+    url("../assets/fonts/Roboto-Regular.woff2") format("woff2"),
+    url("../assets/fonts/Roboto-Bold.woff") format("woff");
+}
