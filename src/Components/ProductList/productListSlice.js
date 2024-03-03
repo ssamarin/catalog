@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   products: [],
   productsLoadingStatus: 'idle',
+  offset: 0,
 };
 
 const productList = createSlice({

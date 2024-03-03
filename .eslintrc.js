@@ -24,5 +24,7 @@ module.exports = {
   rules: {
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
     'no-param-reassign': 'off',
+    'no-underscore-dangle': 'off',
+    'import/no-extraneous-dependencies': 'off',
   },
 };
