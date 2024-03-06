@@ -2,6 +2,7 @@ import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
+import Spinner from '../Spinner';
 import useProductService from '../../services/ProductService';
 import { productDeleted } from './productListSlice';
 import productImg from '../../assets/img/product.png';
@@ -80,6 +81,7 @@ function ProductList() {
   const { getIds, getItems } = useProductService();
   const ids = useSelector((state) => state.productList.ids);
   const products = useSelector((state) => state.productList.products);
+  const productsLoadingStatus = useSelector((state) => state.productList.productsLoadingStatus);
 
   const memoizedGetIds = useMemo(() => getIds, [getIds]);
   const memoizedGetItems = useMemo(() => getItems, [getItems]);
@@ -97,6 +99,10 @@ function ProductList() {
   const onProductDeleted = (id) => {
     dispatch(productDeleted(id));
   };
+
+  if (productsLoadingStatus === 'loading') {
+    return <Spinner />;
+  }
 
   return (
     <ProductListWrapper>
