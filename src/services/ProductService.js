@@ -1,9 +1,18 @@
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import useHttp from '../hooks/http.hook';
+import {
+  idsFetched,
+  idsFetchingError,
+  productsFetching,
+  productsFetched,
+  productsFetchingError,
+} from '../Components/ProductList/productListSlice';
 
 function useProductService() {
   const { request } = useHttp();
   const offset = useSelector((state) => state.productList.offset);
+  const ids = useSelector((state) => state.productList.ids);
+  const dispatch = useDispatch();
 
   const getIds = async (body = JSON.stringify({
     action: 'get_ids',
@@ -12,18 +21,37 @@ function useProductService() {
       limit: 50,
     },
   })) => {
-    await request(body)
-      .then((data) => console.log(data))
-      .catch((e) => console.log(e));
+    dispatch(productsFetching());
+    try {
+      const resp = await request(body);
+      const uniqIds = [...new Set(resp.result)];
+      dispatch(idsFetched(uniqIds));
+      return null;
+    } catch (e) {
+      dispatch(idsFetchingError());
+      console.error(e);
+      return null;
+    }
   };
 
   const getItems = async (body = JSON.stringify({
     action: 'get_items',
-    params: { ids: ['1789ecf3-f81c-4f49-ada2-83804dcc74b0'] },
+    params: { ids },
   })) => {
-    await request(body)
-      .then((data) => console.log(data))
-      .catch((e) => console.log(e));
+    try {
+      const resp = await request(body);
+      const uniqueItems = resp.result.reduce((acc, currentItem) => {
+        if (!acc.find((item) => item.id === currentItem.id)) {
+          acc.push(currentItem);
+        }
+        return acc;
+      }, []);
+      dispatch(productsFetched(uniqueItems));
+    } catch (e) {
+      dispatch(productsFetchingError());
+      await getItems(body);
+      console.error(e);
+    }
   };
 
   const getFields = async (body = JSON.stringify({
