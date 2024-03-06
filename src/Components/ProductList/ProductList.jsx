@@ -11,39 +11,39 @@ import remove from '../../assets/img/remove.svg';
 const ProductListWrapper = styled.div`
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
   gap: 15px;
+  justify-content: center;
 
   .product {
-    display: flex;
     position: relative;
-    border: 1px solid #cb1829;
-    max-width: 260px;
+    display: flex;
     flex-direction: column;
-    row-gap: 5x;
+    max-width: 260px;
     text-align: center;
+    border: 1px solid #cb1829;
+    row-gap: 5px;
 
     &__count {
       position: absolute;
+      top: 0;
+      left: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       width: 30px;
       height: 30px;
       padding: 5px;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #000;
       color: #fff;
-      top: 0;
-      left: 0;
+      background-color: #000;
+      border-radius: 50%;
     }
 
     button {
       position: absolute;
-      width: 30px;
-      height: 30px;
       top: 0;
       right: 35px;
+      width: 30px;
+      height: 30px;
       background-color: transparent;
 
       img {
@@ -57,8 +57,8 @@ const ProductListWrapper = styled.div`
     }
 
     &__brand {
-      font-weight: bold;
       color: #cb1829;
+      font-weight: bold;
     }
 
     &__price {
