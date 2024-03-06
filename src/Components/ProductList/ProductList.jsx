@@ -6,7 +6,7 @@ import Spinner from '../Spinner';
 import useProductService from '../../services/ProductService';
 import { productDeleted } from './productListSlice';
 import productImg from '../../assets/img/product.png';
-import remove from '../../assets/img/remove.svg';
+import remove from '../../assets/icons/remove.svg';
 
 const ProductListWrapper = styled.div`
   display: flex;
@@ -82,6 +82,7 @@ function ProductList() {
   const ids = useSelector((state) => state.productList.ids);
   const products = useSelector((state) => state.productList.products);
   const productsLoadingStatus = useSelector((state) => state.productList.productsLoadingStatus);
+  const searchData = useSelector((state) => state.filters.searchData);
 
   const memoizedGetIds = useMemo(() => getIds, [getIds]);
   const memoizedGetItems = useMemo(() => getItems, [getItems]);
@@ -100,13 +101,23 @@ function ProductList() {
     dispatch(productDeleted(id));
   };
 
+  const searchProducts = (search) => {
+    if (search.length === 0) {
+      return products;
+    }
+    const searchingProducts = products.filter((product) => product.product.indexOf(search) > -1);
+    return searchingProducts;
+  };
+
+  const visibleProducts = searchProducts(searchData);
+
   if (productsLoadingStatus === 'loading') {
     return <Spinner />;
   }
 
   return (
     <ProductListWrapper>
-      {products.map((product, i) => (
+      {visibleProducts.map((product, i) => (
         <div className="product" key={product.id}>
           <span className="product__count">{i + 1}</span>
           <button onClick={() => onProductDeleted(product.id)} aria-label="remove product" type="button">
