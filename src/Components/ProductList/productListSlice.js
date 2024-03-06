@@ -25,8 +25,7 @@ const productList = createSlice({
     },
     productsFetchingError: (state) => { state.productsLoadingStatus = 'error'; },
     productDeleted: (state, action) => {
-      state.products
-        .filter((product) => product.id !== action.payload);
+      state.products = state.products.filter((product) => product.id !== action.payload);
     },
   },
 });

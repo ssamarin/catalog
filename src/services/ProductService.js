@@ -29,6 +29,7 @@ function useProductService() {
       return null;
     } catch (e) {
       dispatch(idsFetchingError());
+      await getIds(body);
       console.error(e);
       return null;
     }
