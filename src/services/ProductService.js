@@ -35,6 +35,20 @@ function useProductService() {
     }
   };
 
+  // const getAmountOfPages = async (body = JSON.stringify({
+  //   action: 'get_ids',
+  // })) => {
+  //   try {
+  //     const resp = await request(body);
+  //     const uniqIds = [...new Set(resp.result)];
+  //     return Math.round(uniqIds.length / 50);
+  //   } catch (e) {
+  //     await getAmountOfPages(body);
+  //     console.error(e);
+  //     return null;
+  //   }
+  // };
+
   const getItems = async (body = JSON.stringify({
     action: 'get_items',
     params: { ids },
