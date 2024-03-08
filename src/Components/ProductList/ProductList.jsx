@@ -80,6 +80,7 @@ function ProductList() {
   const dispatch = useDispatch();
   const { getIds, getItems } = useProductService();
   const ids = useSelector((state) => state.productList.ids);
+  const offset = useSelector((state) => state.productList.offset);
   const products = useSelector((state) => state.productList.products);
   const productsLoadingStatus = useSelector((state) => state.productList.productsLoadingStatus);
   const searchData = useSelector((state) => state.filters.searchData);
@@ -89,7 +90,7 @@ function ProductList() {
 
   useEffect(() => {
     memoizedGetIds();
-  }, []);
+  }, [offset]);
 
   useEffect(() => {
     if (ids.length > 0) {
