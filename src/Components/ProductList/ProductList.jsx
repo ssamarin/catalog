@@ -78,7 +78,9 @@ const ProductListWrapper = styled.div`
 
 function ProductList() {
   const dispatch = useDispatch();
-  const { getIds, getItems } = useProductService();
+  const {
+    getIds, getItems, getAllIds, getAllItems,
+  } = useProductService();
   const ids = useSelector((state) => state.productList.ids);
   const offset = useSelector((state) => state.productList.offset);
   const products = useSelector((state) => state.productList.products);
@@ -101,6 +103,15 @@ function ProductList() {
   const onProductDeleted = (id) => {
     dispatch(productDeleted(id));
   };
+
+  const getAll = async () => {
+    await getAllIds();
+    await getAllItems();
+  };
+
+  useEffect(() => {
+    getAll();
+  }, []);
 
   const searchProducts = (search) => {
     if (search.length === 0) {

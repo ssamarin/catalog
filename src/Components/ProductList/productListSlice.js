@@ -4,6 +4,8 @@ const initialState = {
   ids: [],
   idsLoadingStatus: 'idle',
   products: [],
+  allIds: [],
+  allProducts: [],
   productsLoadingStatus: 'idle',
   offset: 0,
   countOfPage: 1,
@@ -13,6 +15,8 @@ const productList = createSlice({
   name: 'productList',
   initialState,
   reducers: {
+    allIdsFetched: (state, action) => { state.allIds = [...action.payload]; },
+    allProductsFetched: (state, action) => { state.allProducts = [...action.payload]; },
     incOffset: (state, action) => { state.offset += action.payload; },
     changeOffset: (state, action) => { state.offset = action.payload; },
     incCountOfPage: (state, action) => { state.countOfPage += action.payload; },
@@ -38,6 +42,8 @@ const { actions, reducer } = productList;
 
 export default reducer;
 export const {
+  allIdsFetched,
+  allProductsFetched,
   incOffset,
   changeOffset,
   incCountOfPage,

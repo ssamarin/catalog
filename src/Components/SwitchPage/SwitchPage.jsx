@@ -106,7 +106,7 @@ function SwitchPage() {
         {' '}
         159
       </span>
-      <button onClick={() => switchPage(1, 50)} disabled={countOfPage === 159} type="button">
+      <button onClick={() => switchPage(1, 50)} disabled={countOfPage === 159 || invalidInput === true} type="button">
         <img src={right} alt="left" />
       </button>
     </SwitchPageWrapper>

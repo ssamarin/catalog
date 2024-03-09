@@ -2,6 +2,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import useHttp from '../hooks/http.hook';
 import {
   idsFetched,
+  allIdsFetched,
+  allProductsFetched,
   idsFetchingError,
   productsFetching,
   productsFetched,
@@ -12,6 +14,7 @@ function useProductService() {
   const { request } = useHttp();
   const offset = useSelector((state) => state.productList.offset);
   const ids = useSelector((state) => state.productList.ids);
+  const allIds = useSelector((state) => state.productList.allIds);
   const dispatch = useDispatch();
 
   const getIds = async (body = JSON.stringify({
@@ -35,19 +38,20 @@ function useProductService() {
     }
   };
 
-  // const getAmountOfPages = async (body = JSON.stringify({
-  //   action: 'get_ids',
-  // })) => {
-  //   try {
-  //     const resp = await request(body);
-  //     const uniqIds = [...new Set(resp.result)];
-  //     return Math.round(uniqIds.length / 50);
-  //   } catch (e) {
-  //     await getAmountOfPages(body);
-  //     console.error(e);
-  //     return null;
-  //   }
-  // };
+  const getAllIds = async (body = JSON.stringify({
+    action: 'get_ids',
+  })) => {
+    try {
+      const resp = await request(body);
+      const uniqIds = [...new Set(resp.result)];
+      dispatch(allIdsFetched(uniqIds));
+      return null;
+    } catch (e) {
+      await getAllIds(body);
+      console.error(e);
+      return null;
+    }
+  };
 
   const getItems = async (body = JSON.stringify({
     action: 'get_items',
@@ -66,6 +70,27 @@ function useProductService() {
     } catch (e) {
       dispatch(productsFetchingError());
       await getItems(body);
+      console.error(e);
+    }
+  };
+
+  const getAllItems = async (body = JSON.stringify({
+    action: 'get_items',
+    params: { ids: allIds },
+  })) => {
+    dispatch(productsFetching());
+    try {
+      const resp = await request(body);
+      const uniqueItems = resp.result.reduce((acc, currentItem) => {
+        if (!acc.find((item) => item.id === currentItem.id)) {
+          acc.push(currentItem);
+        }
+        return acc;
+      }, []);
+      dispatch(allProductsFetched(uniqueItems));
+    } catch (e) {
+      dispatch(productsFetchingError());
+      await getAllItems(body);
       console.error(e);
     }
   };
@@ -92,6 +117,8 @@ function useProductService() {
   return {
     getIds,
     getItems,
+    getAllIds,
+    getAllItems,
     getFields,
     filter,
   };
