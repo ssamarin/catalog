@@ -79,16 +79,20 @@ const ProductListWrapper = styled.div`
 function ProductList() {
   const dispatch = useDispatch();
   const {
-    getIds, getItems, getAllIds, getAllItems,
+    getIds,
+    getItems,
+    filterByBrand,
   } = useProductService();
   const ids = useSelector((state) => state.productList.ids);
   const offset = useSelector((state) => state.productList.offset);
   const products = useSelector((state) => state.productList.products);
   const productsLoadingStatus = useSelector((state) => state.productList.productsLoadingStatus);
   const searchData = useSelector((state) => state.filters.searchData);
+  const currentBrand = useSelector((state) => state.filters.currentBrand);
 
   const memoizedGetIds = useMemo(() => getIds, [getIds]);
   const memoizedGetItems = useMemo(() => getItems, [getItems]);
+  const memoizedFilterByBrand = useMemo(() => filterByBrand, [filterByBrand]);
 
   useEffect(() => {
     memoizedGetIds();
@@ -100,18 +104,17 @@ function ProductList() {
     }
   }, [ids]);
 
+  useEffect(() => {
+    if (currentBrand !== 'All') {
+      memoizedFilterByBrand(currentBrand);
+    } else {
+      memoizedGetIds();
+    }
+  }, [currentBrand]);
+
   const onProductDeleted = (id) => {
     dispatch(productDeleted(id));
   };
-
-  const getAll = async () => {
-    await getAllIds();
-    await getAllItems();
-  };
-
-  useEffect(() => {
-    getAll();
-  }, []);
 
   const searchProducts = (search) => {
     if (search.length === 0) {

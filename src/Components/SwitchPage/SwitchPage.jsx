@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
@@ -49,8 +49,10 @@ function SwitchPage() {
   const countOfPage = useSelector((state) => state.productList.countOfPage);
   const productsLoadingStatus = useSelector((state) => state.productList.productsLoadingStatus);
   const products = useSelector((state) => state.productList.products);
+  const currentBrand = useSelector((state) => state.filters.currentBrand);
   const [inputValue, setInputValue] = useState(1);
   const [invalidInput, setInvalidInput] = useState(false);
+  const [amountOfPages, setAmountOfPages] = useState(159);
 
   const switchPage = (count, currentOffset) => {
     dispatch(incCountOfPage(count));
@@ -88,6 +90,19 @@ function SwitchPage() {
     }
   };
 
+  const calcAmountOfPages = () => {
+    if (currentBrand !== 'All') {
+      setAmountOfPages(1);
+      setInputValue(1);
+    } else {
+      setAmountOfPages(159);
+    }
+  };
+
+  useEffect(() => {
+    calcAmountOfPages();
+  }, [currentBrand]);
+
   if (products.length === 0 || productsLoadingStatus === 'loading') {
     return null;
   }
@@ -100,13 +115,13 @@ function SwitchPage() {
       <span>
         Страница
         {' '}
-        <input value={inputValue} onChange={(e) => onInputChange(e.target.value)} onBlur={(e) => onInputSwichPage(e.target.value)} onKeyDown={handleKeyDown} className={invalidInput ? 'danger' : null} type="number" min={1} max={159} />
+        <input disabled={currentBrand !== 'All'} value={inputValue} onChange={(e) => onInputChange(e.target.value)} onBlur={(e) => onInputSwichPage(e.target.value)} onKeyDown={handleKeyDown} className={invalidInput ? 'danger' : null} type="number" min={1} max={159} />
         {' '}
         из
         {' '}
-        159
+        {amountOfPages}
       </span>
-      <button onClick={() => switchPage(1, 50)} disabled={countOfPage === 159 || invalidInput === true} type="button">
+      <button onClick={() => switchPage(1, 50)} disabled={countOfPage === 159 || invalidInput === true || currentBrand !== 'All'} type="button">
         <img src={right} alt="left" />
       </button>
     </SwitchPageWrapper>
