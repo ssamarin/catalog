@@ -53,6 +53,7 @@ function useProductService() {
     action: 'get_items',
     params: { ids },
   })) => {
+    dispatch(productsFetching());
     try {
       const resp = await request(body);
       const uniqueItems = resp.result.reduce((acc, currentItem) => {

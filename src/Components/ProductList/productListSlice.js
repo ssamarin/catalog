@@ -14,6 +14,7 @@ const productList = createSlice({
   initialState,
   reducers: {
     incOffset: (state, action) => { state.offset += action.payload; },
+    changeOffset: (state, action) => { state.offset = action.payload; },
     incCountOfPage: (state, action) => { state.countOfPage += action.payload; },
     setCountOfPage: (state, action) => { state.countOfPage = +action.payload; },
     idsFetched: (state, action) => {
@@ -38,6 +39,7 @@ const { actions, reducer } = productList;
 export default reducer;
 export const {
   incOffset,
+  changeOffset,
   incCountOfPage,
   setCountOfPage,
   idsFetching,
