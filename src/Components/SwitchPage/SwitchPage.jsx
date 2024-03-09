@@ -2,7 +2,9 @@ import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
-import { incOffset, incCountOfPage, setCountOfPage } from '../ProductList/productListSlice';
+import {
+  incOffset, changeOffset, incCountOfPage, setCountOfPage,
+} from '../ProductList/productListSlice';
 import right from '../../assets/icons/right.svg';
 import left from '../../assets/icons/left.svg';
 
@@ -47,22 +49,37 @@ function SwitchPage() {
   const countOfPage = useSelector((state) => state.productList.countOfPage);
   const productsLoadingStatus = useSelector((state) => state.productList.productsLoadingStatus);
   const products = useSelector((state) => state.productList.products);
+  const [inputValue, setInputValue] = useState(1);
   const [invalidInput, setInvalidInput] = useState(false);
 
   const switchPage = (count, currentOffset) => {
     dispatch(incCountOfPage(count));
     dispatch(incOffset(currentOffset));
+    if (count > 0) {
+      setInputValue((prev) => prev + 1);
+    } else if (count < 0) {
+      setInputValue((prev) => prev - 1);
+    }
   };
 
   const onInputSwichPage = (count) => {
     const pageNumber = +count;
-    if (count > 0 && count <= 159) {
+    if (pageNumber > 0 && pageNumber <= 159) {
       dispatch(setCountOfPage(+pageNumber));
-      dispatch(incOffset(+pageNumber * 50));
+      if (pageNumber === 1) {
+        dispatch(changeOffset(0));
+      } else {
+        dispatch(changeOffset(+pageNumber * 50));
+      }
       setInvalidInput(false);
+      setInputValue(count);
     } else {
       setInvalidInput(true);
     }
+  };
+
+  const onInputChange = (e) => {
+    setInputValue(e);
   };
 
   const handleKeyDown = (e) => {
@@ -83,7 +100,7 @@ function SwitchPage() {
       <span>
         Страница
         {' '}
-        <input onBlur={(e) => onInputSwichPage(e.target.value)} onKeyDown={handleKeyDown} placeholder={countOfPage} className={invalidInput ? 'danger' : null} type="number" min={1} max={159} />
+        <input value={inputValue} onChange={(e) => onInputChange(e.target.value)} onBlur={(e) => onInputSwichPage(e.target.value)} onKeyDown={handleKeyDown} className={invalidInput ? 'danger' : null} type="number" min={1} max={159} />
         {' '}
         из
         {' '}
