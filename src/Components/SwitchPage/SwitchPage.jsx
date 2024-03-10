@@ -50,6 +50,7 @@ function SwitchPage() {
   const productsLoadingStatus = useSelector((state) => state.productList.productsLoadingStatus);
   const products = useSelector((state) => state.productList.products);
   const currentBrand = useSelector((state) => state.filters.currentBrand);
+  const currentPrice = useSelector((state) => state.filters.currentPrice);
   const [inputValue, setInputValue] = useState(1);
   const [invalidInput, setInvalidInput] = useState(false);
   const [amountOfPages, setAmountOfPages] = useState(159);
@@ -91,7 +92,7 @@ function SwitchPage() {
   };
 
   const calcAmountOfPages = () => {
-    if (currentBrand !== 'All') {
+    if (currentBrand !== 'All' || currentPrice !== 'All') {
       setAmountOfPages(1);
       setInputValue(1);
     } else {
@@ -115,13 +116,13 @@ function SwitchPage() {
       <span>
         Страница
         {' '}
-        <input disabled={currentBrand !== 'All'} value={inputValue} onChange={(e) => onInputChange(e.target.value)} onBlur={(e) => onInputSwichPage(e.target.value)} onKeyDown={handleKeyDown} className={invalidInput ? 'danger' : null} type="number" min={1} max={159} />
+        <input disabled={currentBrand !== 'All' || currentPrice !== 'All'} value={inputValue} onChange={(e) => onInputChange(e.target.value)} onBlur={(e) => onInputSwichPage(e.target.value)} onKeyDown={handleKeyDown} className={invalidInput ? 'danger' : null} type="number" min={1} max={159} />
         {' '}
         из
         {' '}
         {amountOfPages}
       </span>
-      <button onClick={() => switchPage(1, 50)} disabled={countOfPage === 159 || invalidInput === true || currentBrand !== 'All'} type="button">
+      <button onClick={() => switchPage(1, 50)} disabled={countOfPage === 159 || invalidInput === true || currentBrand !== 'All' || currentPrice !== 'All'} type="button">
         <img src={right} alt="left" />
       </button>
     </SwitchPageWrapper>

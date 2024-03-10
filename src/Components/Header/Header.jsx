@@ -2,7 +2,7 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { updateSearchData, setCurrentBrand } from './headerSlice';
+import { updateSearchData, setCurrentBrand, setCurrentPrice } from './headerSlice';
 
 import logo from '../../assets/img/logo.svg';
 import search from '../../assets/icons/search.svg';
@@ -10,7 +10,6 @@ import selectArrow from '../../assets/icons/selectArrow.svg';
 
 const HeaderWrapper = styled.header`
   display: flex;
-  align-items: center;
   justify-content: space-between;
   padding: 30px;
 
@@ -44,6 +43,14 @@ const HeaderWrapper = styled.header`
     align-items: center;
     column-gap: 50px;
 
+    .sortByBrand {
+      span {
+        font-size: 20px;
+        font-weight: 400;
+        margin-right: 15px;
+      }
+    }
+
     select {
       width: 200px;
       height: 40px;
@@ -63,6 +70,10 @@ const HeaderWrapper = styled.header`
       &:focus {
         outline: none;
       }
+
+      &:disabled {
+        border: 2px solid #cb1829;
+      }
     }
 
     span {
@@ -79,6 +90,8 @@ const HeaderWrapper = styled.header`
 function Header() {
   const dispatch = useDispatch();
   const searchData = useSelector((state) => state.filters.searchData);
+  const currentBrand = useSelector((state) => state.filters.currentBrand);
+  const currentPrice = useSelector((state) => state.filters.currentPrice);
   const brands = [
     'All',
     'Piaget',
@@ -109,6 +122,13 @@ function Header() {
     'Alfieri & St.John',
   ];
 
+  const prices = [
+    'All',
+    1100,
+    90000,
+    2350000,
+  ];
+
   const onChangeSearchData = (e) => {
     dispatch(updateSearchData(e.target.value));
   };
@@ -122,11 +142,22 @@ function Header() {
         <input onChange={(e) => onChangeSearchData(e)} value={searchData} type="text" placeholder="Введите название товара" />
       </div>
       <div className="filtersAndAboutUs">
-        <select onChange={(e) => dispatch(setCurrentBrand(e.target.value))} name="brand">
-          {brands.map((brand) => (
-            <option key={brand} value={brand}>{brand}</option>
-          ))}
-        </select>
+        <div className="sortByBrand">
+          <span>Сортировка по цене</span>
+          <select onChange={(e) => dispatch(setCurrentPrice(e.target.value))} disabled={currentBrand !== 'All'} name="price">
+            {prices.map((price) => (
+              <option key={price} value={price}>{price}</option>
+            ))}
+          </select>
+        </div>
+        <div className="sortByBrand">
+          <span>Сортировка по бренду</span>
+          <select onChange={(e) => dispatch(setCurrentBrand(e.target.value))} disabled={currentPrice !== 'All'} name="brand">
+            {brands.map((brand) => (
+              <option key={brand} value={brand}>{brand}</option>
+            ))}
+          </select>
+        </div>
         <NavLink to="aboutus" className={({ isActive }) => (isActive ? 'active' : null)}>
           <span>О нас</span>
         </NavLink>

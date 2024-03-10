@@ -81,6 +81,7 @@ function ProductList() {
   const {
     getIds,
     getItems,
+    filterByPrice,
     filterByBrand,
   } = useProductService();
   const ids = useSelector((state) => state.productList.ids);
@@ -89,10 +90,12 @@ function ProductList() {
   const productsLoadingStatus = useSelector((state) => state.productList.productsLoadingStatus);
   const searchData = useSelector((state) => state.filters.searchData);
   const currentBrand = useSelector((state) => state.filters.currentBrand);
+  const currentPrice = useSelector((state) => state.filters.currentPrice);
 
   const memoizedGetIds = useMemo(() => getIds, [getIds]);
   const memoizedGetItems = useMemo(() => getItems, [getItems]);
   const memoizedFilterByBrand = useMemo(() => filterByBrand, [filterByBrand]);
+  const memoizedFilterByPrice = useMemo(() => filterByPrice, [filterByPrice]);
 
   useEffect(() => {
     memoizedGetIds();
@@ -111,6 +114,14 @@ function ProductList() {
       memoizedGetIds();
     }
   }, [currentBrand]);
+
+  useEffect(() => {
+    if (currentPrice !== 'All') {
+      memoizedFilterByPrice(currentPrice);
+    } else {
+      memoizedGetIds();
+    }
+  }, [currentPrice]);
 
   const onProductDeleted = (id) => {
     dispatch(productDeleted(id));

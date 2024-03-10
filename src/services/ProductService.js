@@ -56,27 +56,19 @@ function useProductService() {
     }
   };
 
-  const getFields = async (body = JSON.stringify({
-    action: 'get_fields',
-  })) => {
-    await request(body)
-      .then((data) => console.log(data))
-      .catch((e) => console.log(e));
-  };
-
-  const filterByCost = async (cost) => {
+  const filterByPrice = async (currentPrice) => {
     const body = JSON.stringify({
       action: 'filter',
       params: {
-        price: cost,
+        price: +currentPrice,
       },
     });
     try {
       const resp = await request(body);
-      dispatch(productsFetched(resp.result));
+      dispatch(idsFetched(resp.result));
     } catch (e) {
       console.error(e);
-      await filterByCost();
+      filterByPrice();
     }
   };
 
@@ -96,11 +88,19 @@ function useProductService() {
     }
   };
 
+  const getFields = async (body = JSON.stringify({
+    action: 'get_fields',
+  })) => {
+    await request(body)
+      .then((data) => console.log(data))
+      .catch((e) => console.log(e));
+  };
+
   return {
     getIds,
     getItems,
     getFields,
-    filterByCost,
+    filterByPrice,
     filterByBrand,
   };
 }

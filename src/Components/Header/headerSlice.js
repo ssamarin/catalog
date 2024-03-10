@@ -3,6 +3,7 @@ import { createSlice } from '@reduxjs/toolkit';
 const initialState = {
   searchData: '',
   currentBrand: 'All',
+  currentPrice: 'All',
 };
 
 const headerSlice = createSlice({
@@ -11,6 +12,7 @@ const headerSlice = createSlice({
   reducers: {
     updateSearchData: (state, action) => { state.searchData = action.payload; },
     setCurrentBrand: (state, action) => { state.currentBrand = action.payload; },
+    setCurrentPrice: (state, action) => { state.currentPrice = action.payload; },
   },
 });
 
@@ -20,4 +22,5 @@ export default reducer;
 export const {
   updateSearchData,
   setCurrentBrand,
+  setCurrentPrice,
 } = actions;
