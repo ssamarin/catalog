@@ -102,7 +102,7 @@ function SwitchPage() {
 
   useEffect(() => {
     calcAmountOfPages();
-  }, [currentBrand]);
+  }, [currentBrand, currentPrice]);
 
   if (products.length === 0 || productsLoadingStatus === 'loading') {
     return null;
