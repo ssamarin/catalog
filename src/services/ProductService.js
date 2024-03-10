@@ -18,14 +18,14 @@ function useProductService() {
     action: 'get_ids',
     params: {
       offset,
-      limit: 50,
+      limit: 55,
     },
   })) => {
     dispatch(productsFetching());
     try {
       const resp = await request(body);
       const uniqIds = [...new Set(resp.result)];
-      dispatch(idsFetched(uniqIds));
+      dispatch(idsFetched(uniqIds.slice(0, 50)));
       return null;
     } catch (e) {
       dispatch(idsFetchingError());
