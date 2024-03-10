@@ -10,22 +10,22 @@ import left from '../../assets/icons/left.svg';
 
 const SwitchPageWrapper = styled.footer`
   display: flex;
-  justify-content: center;
   align-items: center;
-  column-gap: 25px;
+  justify-content: center;
   padding: 30px;
   font-size: 25px;
+  column-gap: 25px;
 
   .bold {
     font-weight: 700;
   }
 
   input {
-    padding: 5px;
     width: 100px;
+    padding: 5px;
+    font-size: 25px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    font-size: 25px;
     outline: none;
   }
 
@@ -51,6 +51,8 @@ function SwitchPage() {
   const products = useSelector((state) => state.productList.products);
   const currentBrand = useSelector((state) => state.filters.currentBrand);
   const currentPrice = useSelector((state) => state.filters.currentPrice);
+  const pageSearchData = useSelector((state) => state.filters.pageSearchData);
+  const dbSearchData = useSelector((state) => state.filters.dbSearchData);
   const [inputValue, setInputValue] = useState(1);
   const [invalidInput, setInvalidInput] = useState(false);
   const [amountOfPages, setAmountOfPages] = useState(159);
@@ -104,7 +106,7 @@ function SwitchPage() {
     calcAmountOfPages();
   }, [currentBrand, currentPrice]);
 
-  if (products.length === 0 || productsLoadingStatus === 'loading') {
+  if (products.length === 0 || productsLoadingStatus === 'loading' || pageSearchData.length !== 0 || dbSearchData.length !== 0) {
     return null;
   }
 

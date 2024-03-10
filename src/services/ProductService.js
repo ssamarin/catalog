@@ -68,7 +68,6 @@ function useProductService() {
       dispatch(idsFetched(resp.result));
     } catch (e) {
       console.error(e);
-      filterByPrice();
     }
   };
 
@@ -84,7 +83,21 @@ function useProductService() {
       dispatch(idsFetched(resp.result));
     } catch (e) {
       console.error(e);
-      filterByBrand();
+    }
+  };
+
+  const filterByProductName = async (productName) => {
+    const body = JSON.stringify({
+      action: 'filter',
+      params: {
+        product: productName,
+      },
+    });
+    try {
+      const resp = await request(body);
+      dispatch(idsFetched(resp.result));
+    } catch (e) {
+      console.error(e);
     }
   };
 
@@ -102,6 +115,7 @@ function useProductService() {
     getFields,
     filterByPrice,
     filterByBrand,
+    filterByProductName,
   };
 }
 

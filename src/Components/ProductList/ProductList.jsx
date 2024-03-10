@@ -18,9 +18,12 @@ const ProductListWrapper = styled.div`
     position: relative;
     display: flex;
     flex-direction: column;
-    max-width: 260px;
+    max-width: 300px;
+    padding: 10px;
     text-align: center;
-    border: 1px solid #cb1829;
+    border: 1px solid #ccc;
+    border-radius: 8px; 
+    box-shadow: 0 4px 8px rgb(0 0 0 / 10%);
     row-gap: 5px;
 
     &__count {
@@ -83,19 +86,22 @@ function ProductList() {
     getItems,
     filterByPrice,
     filterByBrand,
+    filterByProductName,
   } = useProductService();
   const ids = useSelector((state) => state.productList.ids);
   const offset = useSelector((state) => state.productList.offset);
   const products = useSelector((state) => state.productList.products);
   const productsLoadingStatus = useSelector((state) => state.productList.productsLoadingStatus);
-  const searchData = useSelector((state) => state.filters.searchData);
+  const pageSearchData = useSelector((state) => state.filters.pageSearchData);
   const currentBrand = useSelector((state) => state.filters.currentBrand);
   const currentPrice = useSelector((state) => state.filters.currentPrice);
+  const dbSearchData = useSelector((state) => state.filters.dbSearchData);
 
   const memoizedGetIds = useMemo(() => getIds, [getIds]);
   const memoizedGetItems = useMemo(() => getItems, [getItems]);
   const memoizedFilterByBrand = useMemo(() => filterByBrand, [filterByBrand]);
   const memoizedFilterByPrice = useMemo(() => filterByPrice, [filterByPrice]);
+  const memoizedFilterByProductName = useMemo(() => filterByProductName, [filterByProductName]);
 
   useEffect(() => {
     memoizedGetIds();
@@ -123,22 +129,36 @@ function ProductList() {
     }
   }, [currentPrice]);
 
+  useEffect(() => {
+    if (dbSearchData !== '') {
+      memoizedFilterByProductName(dbSearchData);
+    } else {
+      memoizedGetIds();
+    }
+  }, [dbSearchData]);
+
   const onProductDeleted = (id) => {
     dispatch(productDeleted(id));
   };
 
-  const searchProducts = (search) => {
+  const pageSearchProducts = (search) => {
     if (search.length === 0) {
       return products;
     }
-    const searchingProducts = products.filter((product) => product.product.indexOf(search) > -1);
-    return searchingProducts;
+    const pageSearchingProducts = products.filter(
+      (product) => product.product.indexOf(search) > -1,
+    );
+    return pageSearchingProducts;
   };
 
-  const visibleProducts = searchProducts(searchData);
+  const visibleProducts = pageSearchProducts(pageSearchData);
 
   if (productsLoadingStatus === 'loading') {
     return <Spinner />;
+  }
+
+  if (visibleProducts.length === 0) {
+    return <div className="nothing">Товары не найдены</div>;
   }
 
   return (

@@ -2,7 +2,12 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { updateSearchData, setCurrentBrand, setCurrentPrice } from './headerSlice';
+import {
+  updatePageSearchData,
+  updateDbSearchData,
+  setCurrentBrand,
+  setCurrentPrice,
+} from './headerSlice';
 
 import logo from '../../assets/img/logo.svg';
 import search from '../../assets/icons/search.svg';
@@ -19,35 +24,34 @@ const HeaderWrapper = styled.header`
     column-gap: 50px;
 
     input {
-      width: 400px;
+      width: 280px;
       padding: 8px 8px 8px 44px;
-      border-radius: 18px;
-      border: 2px solid #EAEEF4;
-      background: #FFF;
-      color: #B8C4DB;
-      font-size: 16px;
-      font-weight: 400;
-      line-height: 150%;
-      background: url(${search}) no-repeat 12px 8px;
       color: #2b2d35;
-      
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 150%;
+      background: #fff;
+      background: url(${search}) no-repeat 12px 8px;
+      border: 2px solid #eaeef4;
+      border-radius: 18px;
+
       &:focus {
-        outline: none;
         border: 2px solid #cb1829;
+        outline: none;
       }
     }
   }
 
-  .filtersAndAboutUs{
+  .filtersAndAboutUs {
     display: flex;
     align-items: center;
     column-gap: 50px;
 
     .sortByBrand {
       span {
-        font-size: 20px;
-        font-weight: 400;
         margin-right: 15px;
+        font-weight: 400;
+        font-size: 20px;
       }
     }
 
@@ -66,7 +70,7 @@ const HeaderWrapper = styled.header`
       border-radius: 8px;
       cursor: pointer;
       appearance: none;
-  
+
       &:focus {
         outline: none;
       }
@@ -90,6 +94,7 @@ const HeaderWrapper = styled.header`
 function Header() {
   const dispatch = useDispatch();
   const searchData = useSelector((state) => state.filters.searchData);
+  const dbSearchData = useSelector((state) => state.filters.dbSearchData);
   const currentBrand = useSelector((state) => state.filters.currentBrand);
   const currentPrice = useSelector((state) => state.filters.currentPrice);
   const brands = [
@@ -130,7 +135,11 @@ function Header() {
   ];
 
   const onChangeSearchData = (e) => {
-    dispatch(updateSearchData(e.target.value));
+    dispatch(updatePageSearchData(e.target.value));
+  };
+
+  const onChangeDbSearchData = (e) => {
+    dispatch(updateDbSearchData(e.target.value));
   };
 
   return (
@@ -139,7 +148,8 @@ function Header() {
         <NavLink to="/">
           <img src={logo} alt="Valantis" />
         </NavLink>
-        <input onChange={(e) => onChangeSearchData(e)} value={searchData} type="text" placeholder="Введите название товара" />
+        <input onChange={(e) => onChangeSearchData(e)} value={searchData} type="text" placeholder="Поиск по странице" />
+        <input onChange={(e) => onChangeDbSearchData(e)} value={dbSearchData} type="text" placeholder="Поиск по базе данных" />
       </div>
       <div className="filtersAndAboutUs">
         <div className="sortByBrand">
