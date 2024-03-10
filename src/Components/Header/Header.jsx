@@ -36,8 +36,11 @@ const HeaderWrapper = styled.header`
       border-radius: 18px;
 
       &:focus {
-        border: 2px solid #cb1829;
         outline: none;
+      }
+
+      &:disabled {
+        border: 2px solid #cb1829;
       }
     }
   }
@@ -149,12 +152,12 @@ function Header() {
           <img src={logo} alt="Valantis" />
         </NavLink>
         <input onChange={(e) => onChangeSearchData(e)} value={searchData} type="text" placeholder="Поиск по странице" />
-        <input onChange={(e) => onChangeDbSearchData(e)} value={dbSearchData} type="text" placeholder="Поиск по базе данных" />
+        <input onChange={(e) => onChangeDbSearchData(e)} disabled={currentBrand !== 'All' || currentPrice !== 'All'} value={dbSearchData} type="text" placeholder="Поиск по базе данных" />
       </div>
       <div className="filtersAndAboutUs">
         <div className="sortByBrand">
           <span>Сортировка по цене</span>
-          <select onChange={(e) => dispatch(setCurrentPrice(e.target.value))} disabled={currentBrand !== 'All'} name="price">
+          <select onChange={(e) => dispatch(setCurrentPrice(e.target.value))} disabled={currentBrand !== 'All' || dbSearchData !== ''} name="price">
             {prices.map((price) => (
               <option key={price} value={price}>{price}</option>
             ))}
@@ -162,7 +165,7 @@ function Header() {
         </div>
         <div className="sortByBrand">
           <span>Сортировка по бренду</span>
-          <select onChange={(e) => dispatch(setCurrentBrand(e.target.value))} disabled={currentPrice !== 'All'} name="brand">
+          <select onChange={(e) => dispatch(setCurrentBrand(e.target.value))} disabled={currentPrice !== 'All' || dbSearchData !== ''} name="brand">
             {brands.map((brand) => (
               <option key={brand} value={brand}>{brand}</option>
             ))}
