@@ -16,6 +16,7 @@ import selectArrow from '../../assets/icons/selectArrow.svg';
 const HeaderWrapper = styled.header`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 25px;
 
   input {
