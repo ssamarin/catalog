@@ -157,7 +157,7 @@ function ProductList() {
     return <Spinner />;
   }
 
-  if (visibleProducts.length === 0) {
+  if (visibleProducts.length === 0 && dbSearchData.length > 0 || pageSearchData.length > 0) {
     return <div className="nothing">Товары не найдены</div>;
   }
 

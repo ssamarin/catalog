@@ -16,77 +16,65 @@ import selectArrow from '../../assets/icons/selectArrow.svg';
 const HeaderWrapper = styled.header`
   display: flex;
   justify-content: space-between;
-  padding: 30px;
+  padding: 25px;
 
-  .logoAndSearch {
-    display: flex;
-    align-items: center;
-    column-gap: 50px;
+  input {
+    width: 280px;
+    padding: 8px 8px 8px 44px;
+    color: #2b2d35;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    background: #fff;
+    background: url(${search}) no-repeat 12px 8px;
+    border: 2px solid #eaeef4;
+    border-radius: 18px;
 
-    input {
-      width: 280px;
-      padding: 8px 8px 8px 44px;
-      color: #2b2d35;
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 150%;
-      background: #fff;
-      background: url(${search}) no-repeat 12px 8px;
-      border: 2px solid #eaeef4;
-      border-radius: 18px;
+    &:focus {
+      outline: none;
+    }
 
-      &:focus {
-        outline: none;
-      }
-
-      &:disabled {
-        border: 2px solid #cb1829;
-      }
+    &:disabled {
+      border: 2px solid #cb1829;
     }
   }
 
-  .filtersAndAboutUs {
-    display: flex;
-    align-items: center;
-    column-gap: 50px;
-
-    .sortByBrand {
-      span {
-        margin-right: 15px;
-        font-weight: 400;
-        font-size: 20px;
-      }
-    }
-
-    select {
-      width: 200px;
-      height: 40px;
-      padding: 6px 6px 6px 12px;
-      overflow: hidden;
-      color: #2b2d35;
-      font-weight: 400;
-      font-size: 16px;
-      line-height: 150%;
-      background: #fff;
-      background: url(${selectArrow}) no-repeat 170px center;
-      border: 2px solid #eaeef4;
-      border-radius: 8px;
-      cursor: pointer;
-      appearance: none;
-
-      &:focus {
-        outline: none;
-      }
-
-      &:disabled {
-        border: 2px solid #cb1829;
-      }
-    }
-
+  .sortByBrand {
     span {
-      font-weight: 700;
-      font-size: 25px;
+      margin-right: 15px;
+      font-weight: 400;
+      font-size: 20px;
     }
+  }
+
+  select {
+    width: 200px;
+    height: 40px;
+    padding: 6px 6px 6px 12px;
+    overflow: hidden;
+    color: #2b2d35;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 150%;
+    background: #fff;
+    background: url(${selectArrow}) no-repeat 170px center;
+    border: 2px solid #eaeef4;
+    border-radius: 8px;
+    cursor: pointer;
+    appearance: none;
+
+    &:focus {
+      outline: none;
+    }
+
+    &:disabled {
+      border: 2px solid #cb1829;
+    }
+  }
+
+  span {
+    font-weight: 700;
+    font-size: 25px;
   }
 
   .active {
@@ -147,34 +135,30 @@ function Header() {
 
   return (
     <HeaderWrapper>
-      <div className="logoAndSearch">
-        <NavLink to="/">
-          <img src={logo} alt="Valantis" />
-        </NavLink>
-        <input onChange={(e) => onChangeSearchData(e)} value={searchData} type="text" placeholder="Поиск по странице" />
-        <input onChange={(e) => onChangeDbSearchData(e)} disabled={currentBrand !== 'All' || currentPrice !== 'All'} value={dbSearchData} type="text" placeholder="Поиск по базе данных" />
+      <NavLink to="/">
+        <img src={logo} alt="Valantis" />
+      </NavLink>
+      <input onChange={(e) => onChangeSearchData(e)} value={searchData} type="text" placeholder="Поиск по странице" />
+      <input onChange={(e) => onChangeDbSearchData(e)} disabled={currentBrand !== 'All' || currentPrice !== 'All'} value={dbSearchData} type="text" placeholder="Поиск по базе данных" />
+      <div className="sortByBrand">
+        <span>Сортировка по цене</span>
+        <select onChange={(e) => dispatch(setCurrentPrice(e.target.value))} disabled={currentBrand !== 'All' || dbSearchData !== ''} name="price">
+          {prices.map((price) => (
+            <option key={price} value={price}>{price}</option>
+          ))}
+        </select>
       </div>
-      <div className="filtersAndAboutUs">
-        <div className="sortByBrand">
-          <span>Сортировка по цене</span>
-          <select onChange={(e) => dispatch(setCurrentPrice(e.target.value))} disabled={currentBrand !== 'All' || dbSearchData !== ''} name="price">
-            {prices.map((price) => (
-              <option key={price} value={price}>{price}</option>
-            ))}
-          </select>
-        </div>
-        <div className="sortByBrand">
-          <span>Сортировка по бренду</span>
-          <select onChange={(e) => dispatch(setCurrentBrand(e.target.value))} disabled={currentPrice !== 'All' || dbSearchData !== ''} name="brand">
-            {brands.map((brand) => (
-              <option key={brand} value={brand}>{brand}</option>
-            ))}
-          </select>
-        </div>
-        <NavLink to="aboutus" className={({ isActive }) => (isActive ? 'active' : null)}>
-          <span>О нас</span>
-        </NavLink>
+      <div className="sortByBrand">
+        <span>Сортировка по бренду</span>
+        <select onChange={(e) => dispatch(setCurrentBrand(e.target.value))} disabled={currentPrice !== 'All' || dbSearchData !== ''} name="brand">
+          {brands.map((brand) => (
+            <option key={brand} value={brand}>{brand}</option>
+          ))}
+        </select>
       </div>
+      <NavLink to="aboutus" className={({ isActive }) => (isActive ? 'active' : null)}>
+        <span>О нас</span>
+      </NavLink>
     </HeaderWrapper>
   );
 }
