@@ -168,7 +168,7 @@ function Header() {
   };
 
   return (
-    <HeaderWrapper>
+    <HeaderWrapper data-testid="header">
       <NavLink to="/">
         <img src={logo} alt="Valantis" />
       </NavLink>
@@ -192,7 +192,7 @@ function Header() {
           </select>
         </div>
       </div>
-      <NavLink to="aboutus" className={({ isActive }) => (isActive ? 'active aboutUs' : 'aboutUs')}>
+      <NavLink data-testid="toAboutPage" to="aboutus" className={({ isActive }) => (isActive ? 'active aboutUs' : 'aboutUs')}>
         <span className="aboutUs">О нас</span>
       </NavLink>
     </HeaderWrapper>
