@@ -3,7 +3,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import {
-  incOffset, changeOffset, incCountOfPage, setCountOfPage,
+  incOffset,
+  changeOffset,
+  incCountOfPage,
+  setCountOfPage,
 } from '../ProductList/productListSlice';
 import right from '../../assets/icons/right.svg';
 import left from '../../assets/icons/left.svg';
@@ -41,6 +44,12 @@ const SwitchPageWrapper = styled.footer`
 
   .danger {
     border: 2px solid #cb1829;
+  }
+
+  @media (max-width: 591px) {
+    .pageNumber {
+      display: none;
+    }
   }
 `;
 
@@ -116,13 +125,13 @@ function SwitchPage() {
         <img src={left} alt="left" />
       </button>
       <span>
-        Страница
+        <span className="pageNumber">Страница</span>
         {' '}
         <input disabled={currentBrand !== 'All' || currentPrice !== 'All'} value={inputValue} onChange={(e) => onInputChange(e.target.value)} onBlur={(e) => onInputSwichPage(e.target.value)} onKeyDown={handleKeyDown} className={invalidInput ? 'danger' : null} type="number" min={1} max={159} />
         {' '}
-        из
+        <span className="pageNumber">из</span>
         {' '}
-        {amountOfPages}
+        <span className="pageNumber">{amountOfPages}</span>
       </span>
       <button onClick={() => switchPage(1, 50)} disabled={countOfPage === 159 || invalidInput === true || currentBrand !== 'All' || currentPrice !== 'All'} type="button">
         <img src={right} alt="left" />

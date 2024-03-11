@@ -19,57 +19,63 @@ const HeaderWrapper = styled.header`
   align-items: center;
   padding: 25px;
 
-  input {
-    width: 280px;
-    padding: 8px 8px 8px 44px;
-    color: #2b2d35;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 150%;
-    background: #fff;
-    background: url(${search}) no-repeat 12px 8px;
-    border: 2px solid #eaeef4;
-    border-radius: 18px;
+  .filters {
+    display: flex;
+    align-items: center;
+    column-gap: 25px;
 
-    &:focus {
-      outline: none;
-    }
-
-    &:disabled {
-      border: 2px solid #cb1829;
-    }
-  }
-
-  .sortByBrand {
-    span {
-      margin-right: 15px;
+    input {
+      width: 280px;
+      padding: 8px 8px 8px 44px;
+      color: #2b2d35;
       font-weight: 400;
-      font-size: 20px;
+      font-size: 16px;
+      line-height: 150%;
+      background: #fff;
+      background: url(${search}) no-repeat 12px 8px;
+      border: 2px solid #eaeef4;
+      border-radius: 18px;
+  
+      &:focus {
+        outline: none;
+      }
+  
+      &:disabled {
+        border: 2px solid #cb1829;
+      }
     }
-  }
-
-  select {
-    width: 200px;
-    height: 40px;
-    padding: 6px 6px 6px 12px;
-    overflow: hidden;
-    color: #2b2d35;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 150%;
-    background: #fff;
-    background: url(${selectArrow}) no-repeat 170px center;
-    border: 2px solid #eaeef4;
-    border-radius: 8px;
-    cursor: pointer;
-    appearance: none;
-
-    &:focus {
-      outline: none;
+  
+    .sortByBrand {
+      span {
+        margin-right: 15px;
+        font-weight: 400;
+        font-size: 20px;
+      }
     }
-
-    &:disabled {
-      border: 2px solid #cb1829;
+  
+    select {
+      width: 200px;
+      height: 40px;
+      padding: 6px 6px 6px 12px;
+      overflow: hidden;
+      color: #2b2d35;
+      font-weight: 400;
+      font-size: 16px;
+      line-height: 150%;
+      background: #fff;
+      background: url(${selectArrow}) no-repeat 170px center;
+      border: 2px solid #eaeef4;
+      border-radius: 8px;
+      cursor: pointer;
+      appearance: none;
+  
+      &:focus {
+        outline: none;
+      }
+  
+      &:disabled {
+        border: 2px solid #cb1829;
+      }
     }
   }
 
@@ -80,6 +86,33 @@ const HeaderWrapper = styled.header`
 
   .active {
     color: #cb1829;
+  }
+
+  @media (max-width: 1750px) {
+    .sortName {
+      display: none;
+    }
+
+    .aboutUs {
+      font-size: 25px;
+    }
+  }
+
+  @media (max-width: 1370px) {
+    flex-direction: column;
+    row-gap: 10px;
+  }
+
+  @media (max-width: 1050px) {
+    .filters {
+      flex-direction: column;
+      row-gap: 10px;
+
+      select {
+        width: 280px;
+        background: url(${selectArrow}) no-repeat 250px center;
+      }
+    }
   }
 `;
 
@@ -139,26 +172,28 @@ function Header() {
       <NavLink to="/">
         <img src={logo} alt="Valantis" />
       </NavLink>
-      <input onChange={(e) => onChangeSearchData(e)} value={searchData} type="text" placeholder="Поиск по странице" />
-      <input onChange={(e) => onChangeDbSearchData(e)} disabled={currentBrand !== 'All' || currentPrice !== 'All'} value={dbSearchData} type="text" placeholder="Поиск по базе данных" />
-      <div className="sortByBrand">
-        <span>Сортировка по цене</span>
-        <select onChange={(e) => dispatch(setCurrentPrice(e.target.value))} disabled={currentBrand !== 'All' || dbSearchData !== ''} name="price">
-          {prices.map((price) => (
-            <option key={price} value={price}>{price}</option>
-          ))}
-        </select>
+      <div className="filters">
+        <input onChange={(e) => onChangeSearchData(e)} value={searchData} type="text" placeholder="Поиск по странице" />
+        <input onChange={(e) => onChangeDbSearchData(e)} disabled={currentBrand !== 'All' || currentPrice !== 'All'} value={dbSearchData} type="text" placeholder="Поиск по базе данных" />
+        <div className="sortByBrand">
+          <span className="sortName">Сортировка по цене</span>
+          <select onChange={(e) => dispatch(setCurrentPrice(e.target.value))} disabled={currentBrand !== 'All' || dbSearchData !== ''} name="price">
+            {prices.map((price) => (
+              <option key={price} value={price}>{price}</option>
+            ))}
+          </select>
+        </div>
+        <div className="sortByBrand">
+          <span className="sortName">Сортировка по бренду</span>
+          <select onChange={(e) => dispatch(setCurrentBrand(e.target.value))} disabled={currentPrice !== 'All' || dbSearchData !== ''} name="brand">
+            {brands.map((brand) => (
+              <option key={brand} value={brand}>{brand}</option>
+            ))}
+          </select>
+        </div>
       </div>
-      <div className="sortByBrand">
-        <span>Сортировка по бренду</span>
-        <select onChange={(e) => dispatch(setCurrentBrand(e.target.value))} disabled={currentPrice !== 'All' || dbSearchData !== ''} name="brand">
-          {brands.map((brand) => (
-            <option key={brand} value={brand}>{brand}</option>
-          ))}
-        </select>
-      </div>
-      <NavLink to="aboutus" className={({ isActive }) => (isActive ? 'active' : null)}>
-        <span>О нас</span>
+      <NavLink to="aboutus" className={({ isActive }) => (isActive ? 'active aboutUs' : 'aboutUs')}>
+        <span className="aboutUs">О нас</span>
       </NavLink>
     </HeaderWrapper>
   );

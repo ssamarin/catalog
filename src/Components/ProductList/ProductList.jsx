@@ -44,7 +44,7 @@ const ProductListWrapper = styled.div`
     button {
       position: absolute;
       top: 0;
-      right: 35px;
+      right: 0;
       width: 30px;
       height: 30px;
       background-color: transparent;
