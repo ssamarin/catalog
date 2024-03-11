@@ -11,7 +11,7 @@ const AboutWrapper = styled.div`
 
 function AboutUs() {
   return (
-    <AboutWrapper>
+    <AboutWrapper data-testid="aboutUs">
       Мы небольшая команда, которая занимается разработкой
       {' '}
       <span>E-Commerce</span>
