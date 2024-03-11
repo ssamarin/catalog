@@ -18,7 +18,7 @@ const ProductListWrapper = styled.div`
     position: relative;
     display: flex;
     flex-direction: column;
-    max-width: 300px;
+    width: 300px;
     padding: 10px;
     text-align: center;
     border: 1px solid #ccc;
@@ -56,7 +56,7 @@ const ProductListWrapper = styled.div`
     }
 
     &__name {
-      max-width: 100%;
+      width: 100%;
     }
 
     &__brand {
@@ -74,8 +74,13 @@ const ProductListWrapper = styled.div`
   }
 
   img {
-    min-width: 100px;
+    width: 100%;
     height: 200px;
+  }
+
+  .nothing {
+    font-size: 25px;
+    font-weight: 700;
   }
 `;
 
@@ -92,10 +97,10 @@ function ProductList() {
   const offset = useSelector((state) => state.productList.offset);
   const products = useSelector((state) => state.productList.products);
   const productsLoadingStatus = useSelector((state) => state.productList.productsLoadingStatus);
-  const pageSearchData = useSelector((state) => state.filters.pageSearchData);
   const currentBrand = useSelector((state) => state.filters.currentBrand);
   const currentPrice = useSelector((state) => state.filters.currentPrice);
   const dbSearchData = useSelector((state) => state.filters.dbSearchData);
+  const pageSearchData = useSelector((state) => state.filters.pageSearchData);
 
   const memoizedGetIds = useMemo(() => getIds, [getIds]);
   const memoizedGetItems = useMemo(() => getItems, [getItems]);
@@ -155,6 +160,10 @@ function ProductList() {
 
   if (productsLoadingStatus === 'loading') {
     return <Spinner />;
+  }
+
+  if (visibleProducts.length === 0 && pageSearchData.length > 0) {
+    return <div className="nothing">Товары не найдены</div>;
   }
 
   return (
