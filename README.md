@@ -1,7 +1,7 @@
 # 🖥 Catalog
 #### Project published until May 2024 [url](http://valantis-catalog-test.website.yandexcloud.net/)
 
-> Catalog is an online store project with the ability to filter products by brand, price and product name, delete products, and search by page. Implemented step-by-step pagination and the ability to independently select the page number and routing.
+> Catalog - online store project with the ability to filter products by brand, price and product name, delete products, and search by page. Implemented step-by-step pagination and the ability to independently select the page number and routing.
 
 [![Maintenance](https://img.shields.io/badge/Maintained%3F-yes-green.svg)](https://github.com/ssamarin/employees-management-system) [![Ask Me Anything !](https://img.shields.io/badge/Ask%20me-anything-1abc9c.svg)](https://t.me/ssamar1n)
 
