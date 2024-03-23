@@ -5,7 +5,7 @@ function useHttp() {
   const _apiPas = 'Valantis';
   const authString = `${_apiPas}_${timestamp}`.toString();
   const authHeaderValue = md5(authString);
-  const request = async (body, url = 'http://api.valantis.store:40000/', method = 'POST', headers = { 'X-Auth': authHeaderValue, 'Content-Type': 'application/json' }) => {
+  const request = async (body, url = 'https://api.valantis.store:41000/', method = 'POST', headers = { 'X-Auth': authHeaderValue, 'Content-Type': 'application/json' }) => {
     try {
       const response = await fetch(url, { method, body, headers });
 

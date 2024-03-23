@@ -93,6 +93,9 @@ function SwitchPage() {
   };
 
   const onInputChange = (e) => {
+    if (e % 1 !== 0) {
+      e = Math.round(e);
+    }
     setInputValue(e);
   };
 
@@ -127,13 +130,27 @@ function SwitchPage() {
       <span>
         <span className="pageNumber">Страница</span>
         {' '}
-        <input disabled={currentBrand !== 'All' || currentPrice !== 'All'} value={inputValue} onChange={(e) => onInputChange(e.target.value)} onBlur={(e) => onInputSwichPage(e.target.value)} onKeyDown={handleKeyDown} className={invalidInput ? 'danger' : null} type="number" min={1} max={159} />
+        <input
+          disabled={currentBrand !== 'All' || currentPrice !== 'All'}
+          value={inputValue}
+          onChange={(e) => onInputChange(e.target.value)}
+          onBlur={(e) => onInputSwichPage(e.target.value)}
+          onKeyDown={handleKeyDown}
+          className={invalidInput ? 'danger' : null}
+          type="number"
+          min={1}
+          max={159}
+        />
         {' '}
         <span className="pageNumber">из</span>
         {' '}
         <span className="pageNumber">{amountOfPages}</span>
       </span>
-      <button onClick={() => switchPage(1, 50)} disabled={countOfPage === 159 || invalidInput === true || currentBrand !== 'All' || currentPrice !== 'All'} type="button">
+      <button
+        onClick={() => switchPage(1, 50)}
+        disabled={countOfPage === 159 || invalidInput === true || currentBrand !== 'All' || currentPrice !== 'All'}
+        type="button"
+      >
         <img src={right} alt="left" />
       </button>
     </SwitchPageWrapper>
